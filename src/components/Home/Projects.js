@@ -12,7 +12,7 @@ const Projects = props => {
               <a
                 href=""
                 className="tag-default tag-pill"
-                key={project.title}>
+                key={project.id}>
                 {project.title}
               </a>
             );

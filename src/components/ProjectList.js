@@ -23,7 +23,6 @@ const ProjectList = props => {
         props.projects.map(project => {
           return (
             <div>
-              {project.title}
               <ProjectPreview  project={project} key={project.id} />
             </div>
           );

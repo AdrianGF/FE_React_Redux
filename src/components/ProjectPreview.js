@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import { ARTICLE_FAVORITED, ARTICLE_UNFAVORITED } from '../constants/actionTypes';
 
-const FAVORITED_CLASS = 'btn btn-sm btn-primary';
-const NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
+// const FAVORITED_CLASS = 'btn btn-sm btn-primary';
+// const NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
 
 // const mapDispatchToProps = dispatch => ({
 //   favorite: slug => dispatch({
@@ -38,9 +38,8 @@ const ProjectPreview = props => {
       </div>
 
       <Link to={`/projects/${project.id}`} className="preview-link">
-        <h1>{project.title}</h1>
+        <h1>{project.title} - {project.id}</h1>
         <p>{project.description}</p>
-        <span>Read more...</span>
       </Link>
     </div>
   );
