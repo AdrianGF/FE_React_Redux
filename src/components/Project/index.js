@@ -16,8 +16,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Project extends React.Component {
-  componentWillMount() {
-    this.props.onLoad(Promise.all([agent.Projects.get(this.props.match.params.id)]));
+  constructor(props) {
+    super(props);
+    this.props.onLoad(Promise.all([agent.Projects.get(this.props.match.params.slug)]));
   }
 
   componentWillUnmount() {
@@ -31,6 +32,7 @@ class Project extends React.Component {
     return (
       <div className="article-page">
         <h1>Details</h1>
+        {/* {console.log(this.props.project.slug)} */}
         <ProjectDetails project={this.props.project}/>
       </div>
     );

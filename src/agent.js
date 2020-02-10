@@ -3,7 +3,7 @@ import _superagent from 'superagent';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const API_ROOT = 'http://0.0.0.0:8000/projects';
+const API_ROOT = 'http://0.0.0.0:8000/api';
 
 const encode = encodeURIComponent;
 const responseBody = res => res.body;
@@ -23,23 +23,24 @@ const requests = {
   put: (url, body) =>
     superagent.put(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),
   post: (url, body) =>
-    superagent.post(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody)
+    superagent.post(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),
+
 };
 
 const Projects = {
-  getAll: () => requests.get('/projects'),
-  get: id => requests.get(`/projects/${id}`)
+  getAll: () => requests.get('/projects/'),
+  get: slug => requests.get(`/projects/${slug}`)
 };
 
 const Auth = {
   current: () =>
-    requests.get('/user'),
+    requests.get('/user/'),
   login: (email, password) =>
-    requests.post('/users/login', { user: { email, password } }),
+    requests.post('/users/login/', { user: { email, password } }),
   register: (username, email, password) =>
-    requests.post('/users', { user: { username, email, password } }),
+    requests.post('/users/', { user: { username, email, password } }),
   save: user =>
-    requests.put('/user', { user })
+    requests.put('/user/', { user })
 };
 
 const Tags = {
@@ -63,7 +64,7 @@ const Articles = {
     requests.get(`/articles?favorited=${encode(author)}&${limit(5, page)}`),
   feed: () =>
     requests.get('/articles/feed?limit=10&offset=0'),
-    // requests.get('/articles'),
+  // requests.get('/articles'),
   get: slug =>
     requests.get(`/articles/${slug}`),
   unfavorite: slug =>
@@ -84,12 +85,12 @@ const Comments = {
 };
 
 const Profile = {
-  follow: username =>
-    requests.post(`/profiles/${username}/follow`),
+  // follow: username =>
+  //   requests.post(`/profiles/${username}/follow`),
   get: username =>
     requests.get(`/profiles/${username}`),
-  unfollow: username =>
-    requests.del(`/profiles/${username}/follow`)
+  // unfollow: username =>
+  //   requests.del(`/profiles/${username}/follow`)
 };
 
 export default {

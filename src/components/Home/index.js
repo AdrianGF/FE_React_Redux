@@ -2,19 +2,18 @@ import Banner from './Banner';
 import MainView from './MainView';
 import React from 'react';
 // import Tags from './Tags';
-import Projects from './Projects';
+// import Projects from './Projects';
 import agent from '../../agent';
 import { connect } from 'react-redux';
 import {
-  HOME_PAGE_LOADED,
   HOME_PAGE_UNLOADED,
-  APPLY_TAG_FILTER
+  APPLY_TAG_FILTER,
+  PROJECTS_LIST_LOADED
 } from '../../constants/actionTypes';
 
 const Promise = global.Promise;
 
 const mapStateToProps = state => ({
-  ...state.home,
   appName: state.common.appName,
   token: state.common.token,
 });
@@ -23,15 +22,14 @@ const mapDispatchToProps = dispatch => ({
   onClickTag: (tag, pager, payload) =>
     dispatch({ type: APPLY_TAG_FILTER, tag, pager, payload }),
   onLoad: (payload) =>
-    dispatch({ type: HOME_PAGE_LOADED, payload }),
+    dispatch({ type:PROJECTS_LIST_LOADED, payload }),
   onUnload: () =>
     dispatch({  type: HOME_PAGE_UNLOADED })
 });
 
 class Home extends React.Component {
-  UNSAFE_componentWillMount() {
-
-    // console.log(agent.Projects.getAll())
+  constructor(props) {
+    super(props);
     this.props.onLoad(Promise.all([agent.Projects.getAll()]));
   }
 
@@ -48,18 +46,6 @@ class Home extends React.Component {
         <div className="container page">
           <div className="row">
             <MainView />
-
-            <div className="col-md-3">
-              <div className="sidebar">
-
-                <p>Popular Tags</p>
-
-                {/* {console.log(this.props.projects)} */}
-                <Projects                
-                  projects={this.props.projects}/>
-
-              </div>
-            </div>
           </div>
         </div>
 

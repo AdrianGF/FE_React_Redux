@@ -22,7 +22,8 @@ const mapStateToProps = state => {
     appName: state.common.appName,
     currentUser: state.common.currentUser,
     redirectTo: state.common.redirectTo
-  }};
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   onLoad: (payload, token) =>
@@ -32,15 +33,18 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class App extends React.Component {
-  componentWillReceiveProps(nextProps) {
+  shouldComponentUpdate(nextProps) {//Components
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo));
       this.props.onRedirect();
+      return false;
     }
+    return true;
   }
-
-  componentWillMount() {
+  
+  constructor(props) {//willMount
+    super(props);
     const token = window.localStorage.getItem('jwt');
     if (token) {
       agent.setToken(token);
@@ -56,8 +60,8 @@ class App extends React.Component {
           <Header
             appName={this.props.appName}
             currentUser={this.props.currentUser} />
-            <Switch>
-            <Route exact path="/" component={Home}/>
+          <Switch>
+            <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/editor/:slug" component={Editor} />
@@ -66,8 +70,8 @@ class App extends React.Component {
             <Route path="/settings" component={Settings} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
-            <Route path="/projects/:id" component={Project} />
-            </Switch>
+            <Route path="/projects/:slug" component={Project} />
+          </Switch>
         </div>
       );
     }
