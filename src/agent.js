@@ -29,7 +29,9 @@ const requests = {
 
 const Projects = {
   getAll: () => requests.get('/projects/'),
-  get: slug => requests.get(`/projects/${slug}`)
+  get: slug => requests.get(`/projects/${slug}`),
+  favorite: slug => requests.post(`/projects/${slug}/favorite/`),
+  unfavorite: slug => requests.del(`/projects/${slug}/favorite/`),
 };
 
 const Auth = {

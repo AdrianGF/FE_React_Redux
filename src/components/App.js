@@ -71,6 +71,7 @@ class App extends React.Component {
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
             <Route path="/projects/:slug" component={Project} />
+            {/* <Route path="/@:username/favorites" component={ProfileFavorites} /> */}
           </Switch>
         </div>
       );
