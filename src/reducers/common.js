@@ -46,6 +46,7 @@ export default (state = defaultState, action) => {
         currentUser: action.error ? null : action.payload.user
       };
     case LOGIN:
+      // console.log( action.payload.user);
         return {
           ...state,
           redirectTo: action.error ? null : '/',

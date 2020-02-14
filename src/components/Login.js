@@ -4,7 +4,6 @@ import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
 import {
-  UPDATE_FIELD_AUTH,
   LOGIN,
   LOGIN_PAGE_UNLOADED
 } from '../constants/actionTypes';
@@ -12,10 +11,6 @@ import {
 const mapStateToProps = state => ({ ...state.auth });
 
 const mapDispatchToProps = dispatch => ({
-  onChangeEmail: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
-  onChangePassword: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
   onSubmit: (email, password) =>
     dispatch({ type: LOGIN, payload: agent.Auth.login(email, password) }),
   onUnload: () =>
@@ -23,14 +18,26 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Login extends React.Component {
-  constructor() {
-    super();
-    this.changeEmail = ev => this.props.onChangeEmail(ev.target.value);
-    this.changePassword = ev => this.props.onChangePassword(ev.target.value);
-    this.submitForm = (email, password) => ev => {
-      ev.preventDefault();
-      this.props.onSubmit(email, password);
-    };
+  constructor(props) {
+    super(props);
+    this.state = { email: '', password: '' };
+
+    this.Change = this.Change.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
+  }
+
+  Change(ev) {
+    this.setState({ [ev.target.name]: ev.target.value });
+  }
+
+  onSubmit(ev) {
+    ev.preventDefault();
+    
+    var email = this.state.email;
+    var password = this.state.password;
+    this.props.onSubmit( email, password);
+
   }
 
   componentWillUnmount() {
@@ -38,8 +45,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const email = this.props.email;
-    const password = this.props.password;
+
     return (
       <div className="auth-page">
         <div className="container page">
@@ -55,7 +61,7 @@ class Login extends React.Component {
 
               <ListErrors errors={this.props.errors} />
 
-              <form onSubmit={this.submitForm(email, password)}>
+              <form onSubmit={this.onSubmit}>
                 <fieldset>
 
                   <fieldset className="form-group">
@@ -63,8 +69,9 @@ class Login extends React.Component {
                       className="form-control form-control-lg"
                       type="email"
                       placeholder="Email"
-                      value={email}
-                      onChange={this.changeEmail} />
+                      name="email"
+                      // value={email}
+                      onChange={this.Change} />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -72,8 +79,9 @@ class Login extends React.Component {
                       className="form-control form-control-lg"
                       type="password"
                       placeholder="Password"
-                      value={password}
-                      onChange={this.changePassword} />
+                      name="password"
+                      // value={password}
+                      onChange={this.Change} />
                   </fieldset>
 
                   <button

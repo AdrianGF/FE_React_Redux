@@ -33,25 +33,36 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class App extends React.Component {
+  // constructor(props) {//willMount
+  //   super(props);
+  //   // const token = window.localStorage.getItem('jwt');
+  //   // if (token) {
+  //   //   agent.setToken(token);
+  //   // }
+
+  //   // this.props.onLoad(token ? agent.Auth.current() : null, token);
+  // }
+
   shouldComponentUpdate(nextProps) {//Components
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo));
       this.props.onRedirect();
+      this.props.history.go(0);
       return false;
     }
     return true;
   }
-  
-  constructor(props) {//willMount
-    super(props);
+
+  async componentDidMount() {
     const token = window.localStorage.getItem('jwt');
     if (token) {
       agent.setToken(token);
     }
-
-    this.props.onLoad(token ? agent.Auth.current() : null, token);
+    
+    await this.props.onLoad(token ? agent.Auth.current() : null, token);
   }
+
 
   render() {
     if (this.props.appLoaded) {

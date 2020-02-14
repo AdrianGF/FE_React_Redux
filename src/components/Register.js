@@ -4,38 +4,46 @@ import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
 import {
-  UPDATE_FIELD_AUTH,
   REGISTER,
   REGISTER_PAGE_UNLOADED
 } from '../constants/actionTypes';
 
-const mapStateToProps = state => ({ ...state.auth });
+const mapStateToProps = state => ({
+  ...state.auth
+});
 
 const mapDispatchToProps = dispatch => ({
-  onChangeEmail: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
-  onChangePassword: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
-  onChangeUsername: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'username', value }),
   onSubmit: (username, email, password) => {
     const payload = agent.Auth.register(username, email, password);
     dispatch({ type: REGISTER, payload })
   },
   onUnload: () =>
-    dispatch({ type: REGISTER_PAGE_UNLOADED })
+  dispatch({ type: REGISTER_PAGE_UNLOADED })
 });
 
 class Register extends React.Component {
-  constructor() {
-    super();
-    this.changeEmail = ev => this.props.onChangeEmail(ev.target.value);
-    this.changePassword = ev => this.props.onChangePassword(ev.target.value);
-    this.changeUsername = ev => this.props.onChangeUsername(ev.target.value);
-    this.submitForm = (username, email, password) => ev => {
-      ev.preventDefault();
-      this.props.onSubmit(username, email, password);
-    }
+  constructor(props) {
+    super(props);
+    this.state = { username: '', email: '', password: '' };
+
+    this.Change = this.Change.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
+  }
+
+  Change(ev) {
+    this.setState({ [ev.target.name]: ev.target.value });
+  }
+
+  onSubmit(ev) {
+    ev.preventDefault();
+
+    var username = this.state.username;
+    var email = this.state.email;
+    var password = this.state.password;
+
+    this.props.onSubmit(username, email, password);
+
   }
 
   componentWillUnmount() {
@@ -43,9 +51,6 @@ class Register extends React.Component {
   }
 
   render() {
-    const email = this.props.email;
-    const password = this.props.password;
-    const username = this.props.username;
 
     return (
       <div className="auth-page">
@@ -62,7 +67,7 @@ class Register extends React.Component {
 
               <ListErrors errors={this.props.errors} />
 
-              <form onSubmit={this.submitForm(username, email, password)}>
+              <form onSubmit={this.onSubmit}>
                 <fieldset>
 
                   <fieldset className="form-group">
@@ -70,8 +75,9 @@ class Register extends React.Component {
                       className="form-control form-control-lg"
                       type="text"
                       placeholder="Username"
-                      value={this.props.username}
-                      onChange={this.changeUsername} />
+                      // value={this.props.username}
+                      onChange={this.Change}
+                      name="username" />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -79,8 +85,9 @@ class Register extends React.Component {
                       className="form-control form-control-lg"
                       type="email"
                       placeholder="Email"
-                      value={this.props.email}
-                      onChange={this.changeEmail} />
+                      // value={this.props.email}
+                      onChange={this.Change}
+                      name="email" />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -88,8 +95,9 @@ class Register extends React.Component {
                       className="form-control form-control-lg"
                       type="password"
                       placeholder="Password"
-                      value={this.props.password}
-                      onChange={this.changePassword} />
+                      // value={this.props.password}
+                      onChange={this.Change}
+                      name="password" />
                   </fieldset>
 
                   <button
