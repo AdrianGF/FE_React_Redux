@@ -43,7 +43,7 @@ class App extends React.Component {
   //   // this.props.onLoad(token ? agent.Auth.current() : null, token);
   // }
 
-  shouldComponentUpdate(nextProps) {//Components
+  shouldComponentUpdate(nextProps) {//willRecive
     if (nextProps.redirectTo) {
       // this.context.router.replace(nextProps.redirectTo);
       store.dispatch(push(nextProps.redirectTo));

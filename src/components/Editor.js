@@ -31,8 +31,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Editor extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     const updateFieldEvent =
       key => ev => this.props.onUpdateField(key, ev.target.value);
@@ -68,6 +68,12 @@ class Editor extends React.Component {
 
       this.props.onSubmit(promise);
     };
+
+    if (this.props.match.params.slug) {
+      return this.props.onLoad(agent.Articles.get(this.props.match.params.slug));
+    }
+    this.props.onLoad(null);
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -78,13 +84,6 @@ class Editor extends React.Component {
       }
       this.props.onLoad(null);
     }
-  }
-
-  componentWillMount() {
-    if (this.props.match.params.slug) {
-      return this.props.onLoad(agent.Articles.get(this.props.match.params.slug));
-    }
-    this.props.onLoad(null);
   }
 
   componentWillUnmount() {

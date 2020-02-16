@@ -9,8 +9,8 @@ import {
 } from '../constants/actionTypes';
 
 class SettingsForm extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       image: '',
@@ -36,9 +36,7 @@ class SettingsForm extends React.Component {
 
       this.props.onSubmitForm(user);
     };
-  }
 
-  componentWillMount() {
     if (this.props.currentUser) {
       Object.assign(this.state, {
         image: this.props.currentUser.image || '',
@@ -47,7 +45,11 @@ class SettingsForm extends React.Component {
         email: this.props.currentUser.email
       });
     }
+
+
   }
+  
+
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentUser) {
